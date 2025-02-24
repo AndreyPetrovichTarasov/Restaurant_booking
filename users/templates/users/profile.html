@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load users_tags %}
 {% block content %}
-<div class="album py-5 bg-body-tertiary">
-    <div class="container">
+<div class="album py-5">
+    <div class="container profile-container">
         <div class="row d-flex justify-content-center">
             <div class="col-6">
-                <div class="card shadow-sm w-100">
+                <div class="card shadow-sm w-100 bg-transparent">
                     <img src="{{ product.image | media_filter }}">
                     <div class="card-body">
                         <h1 class="card-title text-center">{{ user.first_name }}</h1>

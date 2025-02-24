@@ -50,6 +50,22 @@
         z-index: 20;
         padding: 20px;
     }
+
+    .restaurant-name {
+    font-family: 'Great Vibes', cursive; /* Используем подключенный шрифт */
+    font-size: 50px; /* Делаем текст крупнее */
+    font-weight: bold; /* Делаем жирным */
+    color: #ffffff; /* Белый цвет */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Тень для объёма */
+    }
+
+    .restaurant-tagline {
+    font-size: 18px; /* Чуть меньше размер */
+    font-family: 'Arial', sans-serif; /* Обычный шрифт для подзаголовка */
+    color: #ffffff; /* Светло-серый */
+    display: block;
+    text-align: center; /* Центрируем подзаголовок относительно названия */
+    }
 </style>
 
 <!-- 🛠️ Затемнённый фон -->
@@ -61,9 +77,9 @@
         <div class="container py-4">
             <div class="row">
                 <!-- Логотип -->
-                <div class="col-md-4">
-                    <h4 class="text-white">🍽 "Плакучая Ива"</h4>
-                    <p class="text-secondary">Лучший ресторан в городе</p>
+                <div class="col-md-4 text-start">
+                    <h4 class="restaurant-name">"Плакучая Ива"</h4>
+                    <p class="restaurant-tagline">Ресторан твоей мечты</p>
                 </div>
 
                 <!-- Меню -->
@@ -80,35 +96,49 @@
                 </div>
 
                 <!-- Авторизация -->
-<div class="col-md-4 py-4">
-    <ul class="list-unstyled">
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-            <div class="d-flex flex-column">
-                <!-- Личный кабинет -->
-                <a href="{% url 'users:profile' user.id %}" class="text-white text-decoration-none mb-2">👤 Личный кабинет</a>
+                <div class="col-md-4">
+                    <h5 class="text-white">Аккаунт</h5>
+                    <ul class="list-unstyled">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <div class="d-flex flex-column">
+                                <!-- Личный кабинет -->
+                                <a href="{% url 'users:profile' user.id %}"
+                                   class="text-white text-decoration-none mb-2">👤 Личный кабинет</a>
 
-                <!-- Форма выхода -->
-                <form method="post" action="{% url 'users:logout' %}" style="display:inline">
-                    {% csrf_token %}
-                    <a href="#" class="text-white text-decoration-none logout-link" onclick="this.closest('form').submit(); return false;">🚪 Выйти</a>
-                </form>
-            </div>
-        </li>
-        {% else %}
-        <li><a href="{% url 'users:login' %}" class="text-white text-decoration-none">🔑 Вход</a></li>
-        <li><a href="{% url 'users:register' %}" class="text-white text-decoration-none">📝 Регистрация</a></li>
-        {% endif %}
-    </ul>
-</div>
+                                <!-- Форма выхода -->
+                                <form method="post" action="{% url 'users:logout' %}" style="display:inline">
+                                    {% csrf_token %}
+                                    <a href="#" class="text-white text-decoration-none logout-link"
+                                       onclick="this.closest('form').submit(); return false;">🚪 Выйти</a>
+                                </form>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li><a href="{% url 'users:login' %}" class=class="nav-link-custom">🔑 Вход</a></li>
+                        <li><a href="{% url 'users:register' %}" class="text-white text-decoration-none">📝
+                            Регистрация</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Навигационная панель -->
     <nav class="navbar navbar-dark shadow-sm">
-        <div class="container">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <!-- Слева: название ресторана -->
             <a href="{% url 'home' %}" class="navbar-brand nav-link-custom">🍽 "Плакучая Ива"</a>
+
+            <!-- Центр: ссылки "Бронировать" и "Мои бронирования" -->
+            <div class="d-flex gap-4">
+                <a href="#" class="nav-link-custom">📅 Бронировать</a>
+                <a href="#" class="nav-link-custom">📖 Мои бронирования</a>
+            </div>
+
+            <!-- Справа: кнопка меню -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                     aria-controls="navbarHeader" aria-expanded="false" aria-label="Переключить навигацию">
                 <span class="navbar-toggler-icon"></span>
