@@ -86,11 +86,14 @@
                 <div class="col-md-4">
                     <h5 class="text-white">Меню</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link-custom">🏠 Главная</a></li>
-                        <li><a href="#" class="nav-link-custom">📖 О ресторане</a></li>
-                        <li><a href="#" class="nav-link-custom">📅 Бронирование</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-house-door"></i> Главная</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-archive"></i> О ресторане</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-card-checklist"></i> Услуги</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронирование</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-through-heart"></i> Отзывы посетителей</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-90deg-down"></i> Контакты</a></li>
                         {% if perms.users.can_block_user %}
-                        <li><a href="#" class="nav-link-custom">⚙️ Управление пользователями</a></li>
+                        <li><a href="#" class="nav-link-custom"><i class="bi bi-people"></i> Управление пользователями</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -104,19 +107,19 @@
                             <div class="d-flex flex-column">
                                 <!-- Личный кабинет -->
                                 <a href="{% url 'users:profile' user.id %}"
-                                   class="text-white text-decoration-none mb-2">👤 Личный кабинет</a>
+                                   class="text-white text-decoration-none mb-2"><i class="bi bi-person"></i> Личный кабинет</a>
 
                                 <!-- Форма выхода -->
                                 <form method="post" action="{% url 'users:logout' %}" style="display:inline">
                                     {% csrf_token %}
                                     <a href="#" class="text-white text-decoration-none logout-link"
-                                       onclick="this.closest('form').submit(); return false;">🚪 Выйти</a>
+                                       onclick="this.closest('form').submit(); return false;"><i class="bi bi-eject"></i> Выйти</a>
                                 </form>
                             </div>
                         </li>
                         {% else %}
-                        <li><a href="{% url 'users:login' %}" class=class="nav-link-custom">🔑 Вход</a></li>
-                        <li><a href="{% url 'users:register' %}" class="text-white text-decoration-none">📝
+                        <li><a href="{% url 'users:login' %}" class="text-white text-decoration-none"><i class="bi bi-key"></i> Вход</a></li>
+                        <li><a href="{% url 'users:register' %}" class="text-white text-decoration-none"><i class="bi bi-feather"></i>
                             Регистрация</a></li>
                         {% endif %}
                     </ul>
@@ -130,12 +133,12 @@
         <div class="container d-flex align-items-center justify-content-between">
 
             <!-- Слева: название ресторана -->
-            <a href="{% url 'home' %}" class="navbar-brand nav-link-custom">🍽 "Плакучая Ива"</a>
+            <a href="{% url 'home' %}" class="navbar-brand nav-link-custom"><i class="bi bi-bank2"></i> "Плакучая Ива"</a>
 
             <!-- Центр: ссылки "Бронировать" и "Мои бронирования" -->
             <div class="d-flex gap-4">
-                <a href="#" class="nav-link-custom">📅 Бронировать</a>
-                <a href="#" class="nav-link-custom">📖 Мои бронирования</a>
+                <a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронировать</a>
+                <a href="#" class="nav-link-custom"><i class="bi bi-layout-text-window-reverse"></i> Мои бронирования</a>
             </div>
 
             <!-- Справа: кнопка меню -->
