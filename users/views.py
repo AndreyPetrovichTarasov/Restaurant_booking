@@ -20,6 +20,7 @@ class RegisterView(CreateView):
     """
     Представление регистрации пользователя
     """
+
     template_name = "users/register.html"
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("home")
@@ -41,7 +42,7 @@ class RegisterView(CreateView):
 
         messages.success(
             self.request,
-            "Вы успешно зарегистрировались! Проверьте вашу почту для подтверждения регистрации."
+            "Вы успешно зарегистрировались! Проверьте вашу почту для подтверждения регистрации.",
         )
         return super().form_valid(form)
 
@@ -57,6 +58,7 @@ class CustomLoginView(LoginView):
     """
     Представление для входа
     """
+
     template_name = "users/login.html"
     success_url = reverse_lazy("catalog:home")
 
@@ -65,6 +67,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
     """
     Представление для просмотра профайла
     """
+
     model = CustomUser
     form_class = UserProfileForm
     template_name = "users/profile.html"
@@ -74,6 +77,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     """
     Представление для редактирования профайла
     """
+
     model = CustomUser
     form_class = UserProfileForm
     template_name = "users/edit_profile.html"
@@ -87,6 +91,7 @@ class BlockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
     """
     Представление для блокировки пользователей
     """
+
     def test_func(self):
         # Проверка, что пользователь является менеджером
         return self.request.user.is_staff
@@ -102,6 +107,7 @@ class UsersListView(ListView):
     """
     Представление списка пользователй
     """
+
     model = CustomUser
     template_name = "users/users_list.html"
     context_object_name = "users"
@@ -111,6 +117,7 @@ class ActivateUserView(UserPassesTestMixin, View):
     """
     Представление для активации пользователя
     """
+
     def test_func(self):
         return self.request.user.groups.filter(name="Managers").exists()
 
@@ -126,6 +133,7 @@ class DeactivateUserView(UserPassesTestMixin, View):
     """
     Представление для деактивации пользователя
     """
+
     def test_func(self):
         return self.request.user.groups.filter(name="Managers").exists()
 

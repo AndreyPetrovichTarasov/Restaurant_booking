@@ -1,7 +1,7 @@
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView
+# from django.contrib import messages
+# from django.core.mail import EmailMessage
+# from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 
 # from config.forms.forms import ContactForm
 

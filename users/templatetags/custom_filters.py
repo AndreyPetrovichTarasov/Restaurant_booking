@@ -8,8 +8,8 @@ def add_class(field, css_class):
     return field.as_widget(attrs={"class": css_class})
 
 
-@register.filter(name='split')
-def split(value, delimiter='/'):
+@register.filter(name="split")
+def split(value, delimiter="/"):
     """Разбивает строку по разделителю и возвращает список."""
     return value.split(delimiter)
 

@@ -36,4 +36,6 @@ class Command(BaseCommand):
         custom_permission = Permission.objects.get(codename="can_disable_mailing")
         Managers.permissions.add(custom_permission)
 
-        self.stdout.write(self.style.SUCCESS('Права успешно назначены группе "Managers"'))
+        self.stdout.write(
+            self.style.SUCCESS('Права успешно назначены группе "Managers"')
+        )
