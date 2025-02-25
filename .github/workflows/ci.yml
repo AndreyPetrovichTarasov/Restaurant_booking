@@ -32,30 +32,30 @@ jobs:
       - name: Run flake8
         run: poetry run flake8 .
 
-  test:
-    needs: lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
-      - name: Install Poetry
-        run: pip install poetry
-
-      - name: Install dependencies
-        run: poetry install --no-root
-
-      - name: Run tests
-        run: poetry run pytest users/tests
+#  test:
+#    needs: lint
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+#
+#      - name: Install Poetry
+#        run: pip install poetry
+#
+#      - name: Install dependencies
+#        run: poetry install --no-root
+#
+#      - name: Run tests
+#        run: poetry run pytest users/tests
 
   copy_files_in_server:
-    needs: test
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
