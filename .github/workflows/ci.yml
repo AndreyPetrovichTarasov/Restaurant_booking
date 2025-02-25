@@ -26,19 +26,7 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-    env: # Передаем переменные во все джобы
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DEBUG: ${{ secrets.DEBUG }}
-      NAME: ${{ secrets.NAME }}
-      USER: ${{ secrets.USER }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      HOST: ${{ secrets.HOST }}
-      PORT: ${{ secrets.PORT }}
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      REDIS_HOST: ${{ secrets.REDIS_HOST }}
-      REDIS_PORT: ${{ secrets.REDIS_PORT }}
-      CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
-      CELERY_RESULT_BACKEND: ${{ secrets.CELERY_RESULT_BACKEND }}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
