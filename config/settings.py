@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -54,6 +55,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
+
+TESTING = "pytest" in sys.modules  # Если запущен pytest, значит, это тесты
+if TESTING:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",  # Используем in-memory базу для тестов
+        }
+    }
 
 DATABASES = {
     "default": {
