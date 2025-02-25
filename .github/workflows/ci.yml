@@ -43,7 +43,7 @@ jobs:
         run: poetry install --no-root
 
       - name: Run tests
-        run: poetry run python manage.py test
+        run: poetry run pytest users/tests
 
   copy_files_in_server:
     needs: test
