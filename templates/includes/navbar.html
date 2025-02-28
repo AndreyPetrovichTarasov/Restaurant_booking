@@ -89,7 +89,6 @@
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-house-door"></i> Главная</a></li>
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-archive"></i> О ресторане</a></li>
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-card-checklist"></i> Услуги</a></li>
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронирование</a></li>
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-through-heart"></i> Отзывы посетителей</a></li>
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-90deg-down"></i> Контакты</a></li>
                         {% if perms.users.can_block_user %}
@@ -107,12 +106,13 @@
                             <div class="d-flex flex-column">
                                 <!-- Личный кабинет -->
                                 <a href="{% url 'users:profile' user.id %}"
-                                   class="text-white text-decoration-none mb-2"><i class="bi bi-person"></i> Мой профиль</a>
-
+                                   class="nav-link-custom"><i class="bi bi-person"></i> Мой профиль</a>
+                                <a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронирование</a>
+                                <a href="{% url 'reservations:archived_reservations' %}" class="nav-link-custom"><i class="bi bi-bookmarks"></i> История бронирований</a>
                                 <!-- Форма выхода -->
                                 <form method="post" action="{% url 'users:logout' %}" style="display:inline">
                                     {% csrf_token %}
-                                    <a href="#" class="text-white text-decoration-none logout-link"
+                                    <a href="#" class="nav-link-custom"
                                        onclick="this.closest('form').submit(); return false;"><i class="bi bi-eject"></i> Выйти</a>
                                 </form>
                             </div>
@@ -137,8 +137,8 @@
 
             <!-- Центр: ссылки "Бронировать" и "Мои бронирования" -->
             <div class="d-flex gap-4">
-                <a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронировать</a>
-                <a href="#" class="nav-link-custom"><i class="bi bi-layout-text-window-reverse"></i> Мои бронирования</a>
+                <a href="{% url 'reservations:check_availability' %}" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронировать</a>
+                <a href="{% url 'reservations:user_reservations' %}" class="nav-link-custom"><i class="bi bi-layout-text-window-reverse"></i> Мои бронирования</a>
             </div>
 
             <!-- Справа: кнопка меню -->

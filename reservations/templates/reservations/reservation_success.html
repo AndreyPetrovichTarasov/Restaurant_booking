@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Бронирование успешно!</h2>
+    <p>Вы забронировали столики на {{ reservation.date }} с {{ reservation.start_time }} до {{ reservation.end_time }}.</p>
+    <a href="{% url 'reservations:user_reservations' %}" class="btn btn-primary">Мои бронирования</a>
+
+</div>
+{% endblock %}

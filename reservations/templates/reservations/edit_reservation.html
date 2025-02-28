@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Редактирование брони</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{% url 'reservations:user_reservations' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

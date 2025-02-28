@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Забронировать столик</h2>
+    <div class="card shadow p-4 bg-transparent">
+        <form id="reservation-form" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.date.label_tag }}
+                {{ form.date }}
+            </div>
+            <div class="mb-3">
+                {{ form.start_time.label_tag }}
+                {{ form.start_time }}
+            </div>
+            <div class="mb-3">
+                {{ form.end_time.label_tag }}
+                {{ form.end_time }}
+            </div>
+            <button type="button" id="check-availability" class="btn btn-primary">Проверить доступные столики</button>
+            <div id="tables-list" class="mt-3"></div>
+        </form>
+
+        <div id="tables-container" style="display: none;">
+            <h4 class="mt-4">Свободные столики</h4>
+            <form id="final-reservation-form" method="post">
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-success mt-3">Забронировать</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("check-availability").addEventListener("click", function() {
+        const date = document.querySelector("[name='date']").value;
+        const start_time = document.querySelector("[name='start_time']").value;
+        const end_time = document.querySelector("[name='end_time']").value;
+
+        fetch(`/reservations/available-tables/?date=${date}&start_time=${start_time}&end_time=${end_time}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                const tablesContainer = document.getElementById("tables-container");
+                const tablesList = document.getElementById("tables-list");
+                tablesList.innerHTML = "";
+
+                data.tables.forEach(table => {
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.name = "tables";
+                    checkbox.value = table.id;
+                    checkbox.id = `table-${table.id}`;
+
+                    const label = document.createElement("label");
+                    label.htmlFor = `table-${table.id}`;
+                    label.textContent = table.name;
+
+                    const div = document.createElement("div");
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+
+                    tablesList.appendChild(div);
+                });
+
+                tablesContainer.style.display = "block";
+            });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#id_date, #id_start_time, #id_end_time").change(function () {
+            let date = $("#id_date").val();
+            let start_time = $("#id_start_time").val();
+            let end_time = $("#id_end_time").val();
+
+            if (date && start_time && end_time) {
+                $.ajax({
+                    url: "{% url 'reservations:available_tables' %}",
+                    type: "GET",
+                    data: {
+                        date: date,
+                        start_time: start_time,
+                        end_time: end_time
+                    },
+                    success: function (response) {
+                        $("#tables-list").html(response);
+                    },
+                    error: function () {
+                        alert("Ошибка загрузки доступных столиков.");
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const startTimeInput = document.querySelector("select[name='start_time']");
+        const endTimeInput = document.querySelector("select[name='end_time']");
+
+        form.addEventListener("submit", function (event) {
+            const startTime = startTimeInput.value;
+            const endTime = endTimeInput.value;
+
+            if (startTime && endTime && startTime >= endTime) {
+                event.preventDefault();
+                alert("Ошибка: Время начала должно быть раньше времени окончания!");
+            }
+        });
+    });
+</script>
+{% endblock %}

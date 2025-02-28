@@ -12,7 +12,7 @@ WORKDIR /app
 #     && rm -rf /var/lib/apt/lists/*
 
 # Копируем файл зависимостей в контейнер
-COPY requirements.txt ./
+COPY requirements.txt .
 
 # Устанавливаем зависимости Python
 RUN pip install --no-cache-dir -r requirements.txt

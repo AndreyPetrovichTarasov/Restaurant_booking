@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
-    <title>{% block title %}Perfect Mailings - Сервис по управлению рассылками{% endblock %}</title>
+    <title>{% block title %}Плакучая ива - там, где вкусно и тепло{% endblock %}</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
 
@@ -19,7 +19,7 @@
 
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -33,6 +33,28 @@
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)),
                         url("{% static 'images/restaurant-bg-main.jpg' %}") no-repeat center center fixed;
             background-size: cover;
+        }
+
+        .about-image-block img {
+            margin-top: 80px;
+        }
+
+        .about-text {
+            font-size: 18px; /* Увеличиваем размер шрифта */
+            line-height: 1.6; /* Делаем текст разреженнее */
+            font-weight: 400; /* Делаем текст читабельнее */
+            text-align: justify; /* Выровнять по ширине */
+        }
+
+        .about-text p {
+            margin-bottom: 1rem; /* Добавить отступы между абзацами */
+        }
+
+        .service-img {
+            width: 100%;
+            height: 200px; /* Выбери нужную высоту */
+            object-fit: cover;
+            border-radius: 10px;
         }
 
         .bd-placeholder-img {

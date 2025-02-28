@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>История бронирований</h2>
+
+    {% if reservations %}
+        <ul class="list-group mt-3">
+            {% for reservation in reservations %}
+                <li class="list-group-item">
+                    {{ reservation.date }} ({{ reservation.start_time }} - {{ reservation.end_time }})
+                    - Столики:
+                    {% for table in reservation.tables.all %}
+                        {{ table.number }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">История бронирований пуста.</p>
+    {% endif %}
+    <a href="{% url 'reservations:user_reservations' %}">Мои бронирования</a>
+</div>
+{% endblock %}

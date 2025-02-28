@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<input type="hidden" name="tables[]" value="{{ table.id }}">
+
+<div class="container mt-5">
+    <h2 class="mb-4">Свободные столики на {{ date }} с {{ start_time }} до {{ end_time }}</h2>
+
+    {% if tables %}
+        <form method="post" action="{% url 'reservations:table_booking' %}">
+            {% csrf_token %}
+            <input type="hidden" name="date" value="{{ date }}">
+            <input type="hidden" name="start_time" value="{{ start_time }}">
+            <input type="hidden" name="end_time" value="{{ end_time }}">
+
+            <div class="mb-3">
+                {% for table in tables %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="tables" value="{{ table.id }}" id="table{{ table.id }}">
+                        <label class="form-check-label" for="table{{ table.id }}">
+                            Столик {{ table.number }} ({{ table.seats }} мест)
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-success">Забронировать</button>
+        </form>
+    {% else %}
+        <p class="text-danger">Нет свободных столиков на это время.</p>
+    {% endif %}
+</div>
+{% endblock %}
