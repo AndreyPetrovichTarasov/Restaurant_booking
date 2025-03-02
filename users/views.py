@@ -1,10 +1,11 @@
 import secrets
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -12,8 +13,8 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
 
-from .forms import CustomUserCreationForm, UserProfileForm
-from .models import CustomUser
+from .forms import CustomUserCreationForm, UserProfileForm, ReviewForm
+from .models import CustomUser, Review
 
 
 class RegisterView(CreateView):
@@ -63,14 +64,17 @@ class CustomLoginView(LoginView):
     success_url = reverse_lazy("catalog:home")
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     """
-    Представление для просмотра профайла
+    Представление для редактирования профиля пользователя
     """
-
     model = CustomUser
     form_class = UserProfileForm
     template_name = "users/profile.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_object(self):
+        return self.request.user
 
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
@@ -81,7 +85,9 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = UserProfileForm
     template_name = "users/edit_profile.html"
-    success_url = reverse_lazy("home")
+
+    def get_success_url(self):
+        return reverse("users:profile", kwargs={"pk": self.request.user.pk})
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -143,3 +149,18 @@ class DeactivateUserView(UserPassesTestMixin, View):
         user.save()
         messages.success(request, f"Пользователь {user.username} был деактивирован.")
         return redirect("users:users_list")
+
+
+def reviews_view(request):
+    reviews = Review.objects.all()
+    form = ReviewForm() if request.user.is_authenticated else None  # Форма только для авторизованных
+
+    if request.method == "POST" and request.user.is_authenticated:
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.save()
+            return redirect("users:reviews")
+
+    return render(request, "users/reviews.html", {"reviews": reviews, "form": form})

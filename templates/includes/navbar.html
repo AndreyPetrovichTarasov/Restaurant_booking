@@ -86,11 +86,11 @@
                 <div class="col-md-4">
                     <h5 class="text-white">Меню</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-house-door"></i> Главная</a></li>
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-archive"></i> О ресторане</a></li>
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-card-checklist"></i> Услуги</a></li>
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-through-heart"></i> Отзывы посетителей</a></li>
-                        <li><a href="#" class="nav-link-custom"><i class="bi bi-arrow-90deg-down"></i> Контакты</a></li>
+                        <li><a href="{% url 'home' %}" class="nav-link-custom"><i class="bi bi-house-door"></i> Главная</a></li>
+                        <li><a href="{% url 'about' %}" class="nav-link-custom"><i class="bi bi-archive"></i> О ресторане</a></li>
+                        <li><a href="{% url 'services' %}" class="nav-link-custom"><i class="bi bi-card-checklist"></i> Услуги</a></li>
+                        <li><a href="{% url 'users:reviews' %}" class="nav-link-custom"><i class="bi bi-arrow-through-heart"></i> Отзывы посетителей</a></li>
+                        <li><a href="{% url 'home' %}#contacts"" class="nav-link-custom"><i class="bi bi-arrow-90deg-down"></i> Контакты</a></li>
                         {% if perms.users.can_block_user %}
                         <li><a href="#" class="nav-link-custom"><i class="bi bi-people"></i> Управление пользователями</a></li>
                         {% endif %}

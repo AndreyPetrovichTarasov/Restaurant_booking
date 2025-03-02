@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth.views import (
     LogoutView,
     PasswordResetCompleteView,
@@ -16,7 +18,7 @@ from .views import (
     ProfileView,
     RegisterView,
     UsersListView,
-    email_verification,
+    email_verification, reviews_view,
 )
 
 app_name = "users"
@@ -65,4 +67,8 @@ urlpatterns = [
     path("activate/<int:pk>/", ActivateUserView.as_view(), name="activate_user"),
     path("deactivate/<int:pk>/", DeactivateUserView.as_view(), name="deactivate_user"),
     path("block_user/<int:user_id>/", BlockUserView.as_view(), name="block_user"),
+    path("reviews/", reviews_view, name="reviews"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

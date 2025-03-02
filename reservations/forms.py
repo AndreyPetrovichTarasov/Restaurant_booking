@@ -6,6 +6,7 @@ from reservations.models import Reservation, Table
 
 from django.utils.timezone import now
 
+
 class CheckAvailabilityForm(forms.Form):
     date = forms.DateField(
         label="Дата",

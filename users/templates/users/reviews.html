@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Отзывы посетителей</h2>
+
+    <!-- Список отзывов -->
+    <div class="col-md-8 mx-auto reviews">
+        {% for review in reviews %}
+        <div class="card mb-3 bg-transparent">
+            <div class="card-body">
+                <h5>{{ review.user }}</h5>
+                <p class="mb-1">{{ review.text }}</p>
+                <p class="text-muted small">Оценка: {{ review.rating }}★ | {{ review.created_at|date:"d.m.Y H:i" }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Отзывов пока нет.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Форма отзыва только для авторизованных пользователей -->
+    {% if user.is_authenticated %}
+    <div class="col-md-8 mx-auto card mt-4 bg-transparent">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">{{ form.text.label_tag }} {{ form.text }}</div>
+                <div class="mb-3">{{ form.rating.label_tag }} {{ form.rating }}</div>
+                <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+
+    <p class="text-center mt-3"><a href="{% url 'users:login' %}" class="text-decoration-none">Войдите</a>,
+        чтобы оставить свой отзыв.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

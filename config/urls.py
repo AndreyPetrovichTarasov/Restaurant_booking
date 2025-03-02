@@ -3,12 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from config.views import HomePageView, Feedback
+from config.views import HomePageView, Feedback, AboutView, ServicesView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomePageView.as_view(), name="home"),
     path("feedback.html", Feedback.as_view(), name="feedback"),
+    path("about.html", AboutView.as_view(), name="about"),
+    path("services.html", ServicesView.as_view(), name="services"),
     path("users/", include("users.urls", namespace="users")),
     path("reservations/", include("reservations.urls", namespace="reservations")),
 ]

@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, DetailView
 
 from config.forms import ContactForm
-from content.models import HomePageContent
+from content.models import HomePageContent, AboutContent, ServicesContent
 
 
 class HomePageView(DetailView):
@@ -15,6 +15,24 @@ class HomePageView(DetailView):
 
     def get_object(self):
         return HomePageContent.objects.first()
+
+
+class AboutView(DetailView):
+    model = AboutContent
+    template_name = "about.html"
+    context_object_name = "content"
+
+    def get_object(self):
+        return AboutContent.objects.first()
+
+
+class ServicesView(DetailView):
+    model = ServicesContent
+    template_name = "services.html"
+    context_object_name = "content"
+
+    def get_object(self):
+        return ServicesContent.objects.first()
 
 
 class Feedback(FormView):

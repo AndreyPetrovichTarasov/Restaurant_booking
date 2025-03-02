@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 {% load users_tags %}
 {% block content %}
+{% load static %}
+
 <div class="album py-5">
     <div class="container profile-container">
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                 <div class="card shadow-sm w-100 bg-transparent">
-                    <img src="{{ product.image | media_filter }}">
+                    {% if user.avatar and user.avatar.url %}
+                    <img src="{{ user.avatar.url }}" alt="Аватар" class="img-fluid rounded-circle">
+                    {% else %}
+                    <img src="{% static 'users/default-avatar.jpg' %}" alt="Аватар" class="img-fluid rounded-circle">
+                    {% endif %}
                     <div class="card-body">
                         <h1 class="card-title text-center">{{ user.first_name }}</h1>
                         <p class="card-text">Почта: {{ user.email }}</p>

@@ -26,21 +26,21 @@
             {% if content.menu_image %}
             <img src="{{ content.menu_image.url }}" class="service-img img-fluid rounded shadow" alt="Меню">
             {% endif %}
-            <h4 class="mt-3">{{ content.menu_title }}</h4>
+            <a href="{% url 'services' %}#menu"><h4 class="mt-3">{{ content.menu_title }}</h4></a>
             <p>{{ content.menu_desc }}</p>
         </div>
         <div class="col-md-4">
             {% if content.events_image %}
             <img src="{{ content.events_image.url }}" class="service-img img-fluid rounded shadow" alt="Банкеты">
             {% endif %}
-            <h4 class="mt-3">{{ content.events_title }}</h4>
+            <a href="{% url 'services' %}#events"><h4 class="mt-3">{{ content.events_title }}</h4></a>
             <p>{{ content.events_desc }}</p>
         </div>
         <div class="col-md-4">
             {% if content.live_music_image %}
             <img src="{{ content.live_music_image.url }}" class="service-img img-fluid rounded shadow" alt="Музыка">
             {% endif %}
-            <h4 class="mt-3">{{ content.live_music_title }}</h4>
+            <a href="{% url 'services' %}#live_music"><h4 class="mt-3">{{ content.live_music_title }}</h4></a>
             <p>{{ content.live_music_desc }}</p>
         </div>
     </div>

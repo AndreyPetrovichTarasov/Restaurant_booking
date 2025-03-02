@@ -49,10 +49,25 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return f"{self.first_name} ({self.email})"
 
     class Meta:
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
         ordering = ["email"]
         permissions = [("can_block_user", "Can block user")]
+
+
+class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
+    text = models.TextField(verbose_name="Текст отзыва")
+    rating = models.PositiveSmallIntegerField(verbose_name="Оценка", choices=[(i, str(i)) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    def __str__(self):
+        return f"Отзыв от {self.user} ({self.rating}★)"
+
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+        ordering = ["-created_at"]

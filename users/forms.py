@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import CustomUser
+from .models import CustomUser, Review
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -54,4 +54,14 @@ class UserProfileForm(forms.ModelForm):
             "phone_number": forms.TextInput(attrs={"class": "form-control"}),
             "avatar": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "country": forms.TextInput(attrs={"class": "form-control"}),
+        }
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["text", "rating"]
+        widgets = {
+            "text": forms.Textarea(attrs={"class": "form-control", "rows": 4, "placeholder": "Напишите ваш отзыв..."}),
+            "rating": forms.Select(attrs={"class": "form-control"}),
         }

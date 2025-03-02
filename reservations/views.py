@@ -13,7 +13,7 @@ from .forms import CheckAvailabilityForm, ReservationForm
 from .models import Table, Reservation, ArchivedReservation
 
 
-class TableAvailabilityView(View):
+class TableAvailabilityView(LoginRequiredMixin, View):
     template_name = "reservations/check_availability.html"
 
     def get(self, request):
@@ -55,7 +55,7 @@ class TableAvailabilityView(View):
         return render(request, self.template_name, {"form": form})
 
 
-class TableBookingView(View):
+class TableBookingView(LoginRequiredMixin, View):
     def post(self, request):
         date_str = request.POST.get("date")
         print(f"Полученная дата: {date_str}")  # Лог для отладки
@@ -141,7 +141,7 @@ class ReservationUpdateView(LoginRequiredMixin, UpdateView):
         return Reservation.objects.filter(user=self.request.user)
 
 
-class ArchivedReservationsView(ListView):
+class ArchivedReservationsView(LoginRequiredMixin, ListView):
     model = ArchivedReservation
     template_name = "reservations/archived_reservations.html"
     context_object_name = "reservations"
