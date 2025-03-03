@@ -11,31 +11,69 @@
 
 ```
 Restaurant_booking/
+│── config/             # Основная конфигурация Django
+│   ├── celery.py       # Конфигурация Celery
+│   ├── forms.py        # Формы для обратной связи
+│   ├── settings.py     # Основные настройки проекта
+│   ├── urls.py         # Основные маршруты
+│   ├── views.py        # Представления для общего контента
+│── content/            # Дополнительные данные и файлы контента
+│   ├── migrations/     # Миграции базы данных
+│   ├── admin.py        # Настройка админки
+│   ├── models.py       # Модели базы данных контента
+│   ├── urls.py         # Маршруты приложения
+│   ├── views.py        # Представления (CBV)
 │── reservations/       # Приложение для управления бронированием
+│   ├── management/     # Кастомные команды
 │   ├── migrations/     # Миграции базы данных
 │   ├── templates/      # Шаблоны HTML
-│   ├── static/         # Статические файлы (CSS, JS, изображения)
+│   ├── admin.py        # Настройка админки
 │   ├── forms.py        # Формы для бронирования
 │   ├── models.py       # Модели базы данных
-│   ├── views.py        # Представления (CBV)
-│   ├── urls.py         # Маршруты приложения
 │   ├── tasks.py        # Фоновые задачи Celery
+│   ├── tests.py        # Тесты
+│   ├── urls.py         # Маршруты приложения
+│   ├── views.py        # Представления (CBV)
 │── users/              # Приложение для управления пользователями
+│   ├── management/     # Кастомные команды
+│   ├── migrations/     # Миграции базы данных
+│   ├── templates/      # Шаблоны HTML
+│   ├── templatestags/  # Фильтры
+│   ├── admin.py        # Настройка админки
+│   ├── conftest.py     # Фикстуры для тестов
+│   ├── forms.py        # Формы для бронирования
+│   ├── models.py       # Модели базы данных
+│   ├── tests.py        # Тесты
+│   ├── urls.py         # Маршруты приложения
+│   ├── views.py        # Представления (CBV)
 │── templates/          # Глобальные шаблоны
 │── static/             # Глобальные статические файлы
 │── media/              # Загружаемые пользователями файлы (аватары, изображения)
-│── Restaurant_booking/ # Основная конфигурация Django
-│   ├── settings.py     # Основные настройки проекта
-│   ├── urls.py         # Основные маршруты
-│   ├── celery.py       # Конфигурация Celery
-│── docker/             # Файлы Docker для контейнеризации
+│── Dockerfile          # Конфигурация докер
 │── docker-compose.yml  # Файл для запуска контейнеров
+│── .env                # Переменные окружения
+│── .flake8             # Настройки линтера
+│── .gitignore          # Гитигнор файл
 │── manage.py           # Django CLI
+│── poetry.lock         # Файл зависимостей
+│── pyproject.toml      # Настройки проекта
 │── requirements.txt    # Список зависимостей
 │── README.md           # Документация проекта
+│── test_data.json      # Тестовые данные для БД
+
 ```
 
----
+## Стек технологий:
+
+- **Django**: основной фреймворк для разработки веб-приложения.
+- **PostgreSQL**: база данных для хранения информации о пользователях, продуктах и статьях.
+- **HTML/CSS/Bootstrap**: для фронтенда.
+- **Pillow**: для работы с изображениями (аватары, изображения товаров и т. д.).
+- **Pytest**: Тестирование
+- **Redis**: Кеширование
+- **Celery**: Фоновые задачи
+- **Django-celery-beat**: Планировщик задач
+
 
 ## 🎯 Функциональность  
 
@@ -51,8 +89,6 @@ Restaurant_booking/
 - Просмотр и редактирование броней
 - Управление контентом сайта через Django Admin
 
----
-
 ## 🚀 Установка и запуск проекта  
 
 ### 1️⃣ Установка зависимостей  
@@ -60,8 +96,8 @@ Restaurant_booking/
 
 #### 🔹 Клонируем репозиторий  
 ```bash
-git clone https://github.com/yourusername/restaurant-booking.git
-cd restaurant-booking
+git clone https://github.com/AndreyPetrovichTarasov/Restaurant_booking.git
+cd Restaurant_booking
 ```
 
 #### 🔹 Создаем и активируем виртуальное окружение  
@@ -76,8 +112,6 @@ venv\Scripts\activate  # для Windows
 pip install -r requirements.txt
 ```
 
----
-
 ### 2️⃣ Настройка базы данных  
 
 1. В файле `Restaurant_booking/settings.py` указываем параметры подключения к **PostgreSQL**:  
@@ -85,7 +119,7 @@ pip install -r requirements.txt
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'restaurant_db',
+        'NAME': 'your_db_name',
         'USER': 'your_db_user',
         'PASSWORD': 'your_db_password',
         'HOST': 'localhost',
@@ -95,14 +129,17 @@ DATABASES = {
 ```
 2. **Применяем миграции**  
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 ```
 
 3. **Создаем суперпользователя для входа в админку**  
 ```bash
-python manage.py createsuperuser
+python manage.py createadmin
 ```
-
+4. **Загружаем тестовые данные в БД**  
+```bash
+python manage.py loaddata test_data.json
 ---
 
 ### 3️⃣ Запуск сервиса  
@@ -112,17 +149,23 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+#### Линтеры и кодировка:
+
+Для обеспечения качества кода используйте линтеры:
+
+    Black: автоматическое форматирование кода.
+    Flake8: статический анализ кода.
+    isort: сортировка импортов
+
 #### 🔹 Запускаем Celery (для фоновых задач)  
 ```bash
-celery -A Restaurant_booking worker --loglevel=info
+celery -A myproject worker --loglevel=info --pool=solo
 ```
 
 #### 🔹 Запускаем планировщик Celery Beat  
 ```bash
 celery -A Restaurant_booking beat --loglevel=info
 ```
-
----
 
 ## 🐳 Запуск с помощью Docker  
 
@@ -143,11 +186,6 @@ http://127.0.0.1:8000/admin
 
 ## 🔧 Дополнительные команды  
 
-- **Создать тестовые данные:**  
-  ```bash
-  python manage.py loaddata fixtures.json
-  ```
-
 - **Очистить базу данных (⚠️ опасно!):**  
   ```bash
   python manage.py flush
@@ -158,8 +196,16 @@ http://127.0.0.1:8000/admin
   pytest --cov=.
   ```
 
----
-
 ## 📞 Контакты  
 Если у вас есть вопросы, пишите на email:  
-📧 `support@restaurant-booking.com`  
+📧 `lacryk@gmail.com`  
+
+## Документация
+
+Для разработчиков: проект построен с использованием Django, и его структура основывается на стандартных практиках Django-приложений. Прочитайте документацию Django, чтобы лучше понять, как взаимодействовать с проектом.
+
+Для пользователей: Если вы хотите узнать, как использовать функционал сайта, переходите в раздел "Регистрация" или "Главная", чтобы начать.
+
+## Лицензия
+
+Проект распространяется под [лицензией MIT](LICENSE).

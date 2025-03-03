@@ -59,9 +59,13 @@ class CustomUser(AbstractUser):
 
 
 class Review(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
     text = models.TextField(verbose_name="Текст отзыва")
-    rating = models.PositiveSmallIntegerField(verbose_name="Оценка", choices=[(i, str(i)) for i in range(1, 6)])
+    rating = models.PositiveSmallIntegerField(
+        verbose_name="Оценка", choices=[(i, str(i)) for i in range(1, 6)]
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     def __str__(self):

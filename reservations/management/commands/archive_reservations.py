@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 from reservations.models import Reservation, ArchivedReservation
 
 
@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = "Перемещает завершенные брони в архив"
 
     def handle(self, *args, **kwargs):
-        current_datetime = now()
+        current_datetime = localtime(now())
         expired_reservations = Reservation.objects.filter(
             date__lt=current_datetime.date()
         ) | Reservation.objects.filter(
@@ -19,7 +19,7 @@ class Command(BaseCommand):
                 user=reservation.user,
                 date=reservation.date,
                 start_time=reservation.start_time,
-                end_time=reservation.end_time
+                end_time=reservation.end_time,
             )
             archived_reservation.tables.set(reservation.tables.all())
 

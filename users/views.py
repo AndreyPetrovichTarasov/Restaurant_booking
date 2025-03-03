@@ -1,14 +1,13 @@
 import secrets
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
@@ -68,6 +67,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     """
     Представление для редактирования профиля пользователя
     """
+
     model = CustomUser
     form_class = UserProfileForm
     template_name = "users/profile.html"
@@ -153,7 +153,9 @@ class DeactivateUserView(UserPassesTestMixin, View):
 
 def reviews_view(request):
     reviews = Review.objects.all()
-    form = ReviewForm() if request.user.is_authenticated else None  # Форма только для авторизованных
+    form = (
+        ReviewForm() if request.user.is_authenticated else None
+    )  # Форма только для авторизованных
 
     if request.method == "POST" and request.user.is_authenticated:
         form = ReviewForm(request.POST)

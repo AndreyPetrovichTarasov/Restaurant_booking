@@ -9,7 +9,14 @@ class TableAdmin(admin.ModelAdmin):
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ("user", "get_tables", "date", "start_time", "end_time", "created_at")
+    list_display = (
+        "user",
+        "get_tables",
+        "date",
+        "start_time",
+        "end_time",
+        "created_at",
+    )
     list_filter = ("date", "start_time", "end_time", "tables")
     search_fields = ("user__email", "tables__number")
 

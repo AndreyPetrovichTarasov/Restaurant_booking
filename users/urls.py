@@ -18,7 +18,8 @@ from .views import (
     ProfileView,
     RegisterView,
     UsersListView,
-    email_verification, reviews_view,
+    email_verification,
+    reviews_view,
 )
 
 app_name = "users"

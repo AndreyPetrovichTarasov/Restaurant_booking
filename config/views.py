@@ -1,13 +1,15 @@
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.urls import reverse_lazy
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, FormView, DetailView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import FormView, DetailView
 
 from config.forms import ContactForm
 from content.models import HomePageContent, AboutContent, ServicesContent
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')  # Кэш на 15 минут
 class HomePageView(DetailView):
     model = HomePageContent
     template_name = "home.html"
@@ -17,6 +19,7 @@ class HomePageView(DetailView):
         return HomePageContent.objects.first()
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')  # Кэш на 15 минут
 class AboutView(DetailView):
     model = AboutContent
     template_name = "about.html"
@@ -26,6 +29,7 @@ class AboutView(DetailView):
         return AboutContent.objects.first()
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')  # Кэш на 15 минут
 class ServicesView(DetailView):
     model = ServicesContent
     template_name = "services.html"

@@ -18,6 +18,8 @@ pytest-cov = "^6.0.0"
 celery = "^5.4.0"
 django-celery-beat = "^2.7.0"
 python-dateutil = "^2.9.0.post0"
+drf-spectacular = "^0.28.0"
+django-redis = "^5.4.0"
 
 
 [tool.poetry.group.lint.dependencies]

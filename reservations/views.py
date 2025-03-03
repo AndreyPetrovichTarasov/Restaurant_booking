@@ -1,12 +1,9 @@
-import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DeleteView, UpdateView
-from django.utils.dateparse import parse_date
 from dateutil.parser import parse
 
 from .forms import CheckAvailabilityForm, ReservationForm
@@ -32,7 +29,7 @@ class TableAvailabilityView(LoginRequiredMixin, View):
             # Находим занятые столики
             reserved_tables = Reservation.objects.filter(
                 Q(start_time__lt=end_time) & Q(end_time__gt=start_time),
-                date=date  # Фильтр по дате должен быть отдельным аргументом
+                date=date,  # Фильтр по дате должен быть отдельным аргументом
             ).values_list("tables", flat=True)
 
             print(f"Занятые столики: {list(reserved_tables)}")
@@ -45,12 +42,16 @@ class TableAvailabilityView(LoginRequiredMixin, View):
 
             print(f"Свободные столики: {list(available_tables)}")
 
-            return render(request, "reservations/table_list.html", {
-                "tables": available_tables,
-                "date": date,
-                "start_time": start_time,
-                "end_time": end_time
-            })
+            return render(
+                request,
+                "reservations/table_list.html",
+                {
+                    "tables": available_tables,
+                    "date": date,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                },
+            )
 
         return render(request, self.template_name, {"form": form})
 
@@ -65,9 +66,13 @@ class TableBookingView(LoginRequiredMixin, View):
             date = parse(date_str).date()  # Универсальное преобразование даты
         except ValueError:
             print(f"Ошибка формата даты: {date_str}")
-            return render(request, "reservations/table_list.html", {
-                "error": "Ошибка в формате даты.",
-            })
+            return render(
+                request,
+                "reservations/table_list.html",
+                {
+                    "error": "Ошибка в формате даты.",
+                },
+            )
 
         start_time = request.POST.get("start_time")
         end_time = request.POST.get("end_time")
@@ -76,21 +81,29 @@ class TableBookingView(LoginRequiredMixin, View):
         print(f"Выбранные столики: {table_ids}")  # Логирование для проверки
 
         if not table_ids:
-            return render(request, "reservations/table_list.html", {
-                "error": "Выберите хотя бы один столик.",
-                "date": date,
-                "start_time": start_time,
-                "end_time": end_time
-            })
+            return render(
+                request,
+                "reservations/table_list.html",
+                {
+                    "error": "Выберите хотя бы один столик.",
+                    "date": date,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                },
+            )
 
         if not request.user.is_authenticated:
             print("Ошибка: Пользователь не авторизован!")
-            return render(request, "reservations/table_list.html", {
-                "error": "Вы должны войти в систему, чтобы забронировать столик.",
-                "date": date,
-                "start_time": start_time,
-                "end_time": end_time
-            })
+            return render(
+                request,
+                "reservations/table_list.html",
+                {
+                    "error": "Вы должны войти в систему, чтобы забронировать столик.",
+                    "date": date,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                },
+            )
 
         tables = Table.objects.filter(id__in=table_ids)
 
@@ -98,13 +111,15 @@ class TableBookingView(LoginRequiredMixin, View):
             user=request.user,
             date=date,  # Теперь в правильном формате
             start_time=start_time,
-            end_time=end_time
+            end_time=end_time,
         )
         reservation.tables.set(tables)
 
-        return render(request, "reservations/reservation_success.html", {
-            "reservation": reservation
-        })
+        return render(
+            request,
+            "reservations/reservation_success.html",
+            {"reservation": reservation},
+        )
 
 
 class ReservationSuccessView(LoginRequiredMixin, TemplateView):
@@ -117,7 +132,9 @@ class UserReservationsView(LoginRequiredMixin, ListView):
     context_object_name = "reservations"
 
     def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user).order_by("-date", "-start_time")
+        return Reservation.objects.filter(user=self.request.user).order_by(
+            "-date", "-start_time"
+        )
 
 
 class ReservationDeleteView(LoginRequiredMixin, DeleteView):

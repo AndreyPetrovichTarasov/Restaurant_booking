@@ -107,7 +107,8 @@
                                 <!-- Личный кабинет -->
                                 <a href="{% url 'users:profile' user.id %}"
                                    class="nav-link-custom"><i class="bi bi-person"></i> Мой профиль</a>
-                                <a href="#" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронирование</a>
+                                <a href="{% url 'reservations:check_availability' %}" class="nav-link-custom"><i class="bi bi-bookmark-check"></i> Бронирование</a>
+                                <a href="{% url 'reservations:user_reservations' %}" class="nav-link-custom"><i class="bi bi-layout-text-window-reverse"></i> Мои бронирования</a>
                                 <a href="{% url 'reservations:archived_reservations' %}" class="nav-link-custom"><i class="bi bi-bookmarks"></i> История бронирований</a>
                                 <!-- Форма выхода -->
                                 <form method="post" action="{% url 'users:logout' %}" style="display:inline">

@@ -1,32 +1,40 @@
 {% extends 'base.html' %}
 {% load users_tags %}
-{% block content %}
 {% load static %}
+
+{% block content %}
 
 <div class="album py-5">
     <div class="container profile-container">
+        <h2 class="text-center mb-4 fw-bold">Профиль</h2>
         <div class="row d-flex justify-content-center">
-            <div class="col-6">
-                <div class="card shadow-sm w-100 bg-transparent">
-                    {% if user.avatar and user.avatar.url %}
-                    <img src="{{ user.avatar.url }}" alt="Аватар" class="img-fluid rounded-circle">
-                    {% else %}
-                    <img src="{% static 'users/default-avatar.jpg' %}" alt="Аватар" class="img-fluid rounded-circle">
-                    {% endif %}
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg border-0 rounded-4 p-4 bg-transparent">
+                    <div class="d-flex align-items-center gap-4">
+                        {% if user.avatar and user.avatar.url %}
+                        <img src="{{ user.avatar.url }}" alt="Аватар"
+                             class="rounded-circle border border-2 border-secondary shadow-sm"
+                             style="width: 120px; height: 120px;">
+                        {% else %}
+                        <img src="{% static 'users/default-avatar.jpg' %}" alt="Аватар"
+                             class="rounded-circle border border-2 border-secondary shadow-sm"
+                             style="width: 120px; height: 120px;">
+                        {% endif %}
+                        <div>
+                            <h1 class="fw-bold text-dark">{{ user.first_name }}</h1>
+                            <p class="text-muted mb-0">{{ user.email }}</p>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="card-body">
-                        <h1 class="card-title text-center">{{ user.first_name }}</h1>
-                        <p class="card-text">Почта: {{ user.email }}</p>
-                        <p class="card-text text-muted">Имя: {{ user.first_name }}</p>
-                        <p class="card-text text-muted">Фамилия: {{ user.last_name }}</p>
-                        <p class="card-text text-muted">Телефон: {{ user.phone_number }}</p>
-                        <p class="card-text text-muted">Страна: {{ user.country }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a class="btn btn-primary" href="{% url 'users:edit_profile' %}"
-                               role="button">Редактировать</a>
-                            <a class="btn btn-primary" href="{% url 'users:password_reset' %}"
-                               role="button">Сменить пароль</a>
-                            <a class="btn btn-primary" href="{% url 'home' %}"
-                               role="button">На главную</a>
+                        <p class="card-text"><strong>Имя:</strong> {{ user.first_name }}</p>
+                        <p class="card-text"><strong>Фамилия:</strong> {{ user.last_name }}</p>
+                        <p class="card-text"><strong>Телефон:</strong> {{ user.phone_number }}</p>
+                        <p class="card-text"><strong>Страна:</strong> {{ user.country }}</p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a class="btn btn-outline-primary w-100 me-2" href="{% url 'users:edit_profile' %}">Редактировать</a>
+                            <a class="btn btn-outline-warning w-100 me-2" href="{% url 'users:password_reset' %}">Сменить пароль</a>
+                            <a class="btn btn-outline-secondary w-100" href="{% url 'home' %}">На главную</a>
                         </div>
                     </div>
                 </div>
@@ -34,4 +42,7 @@
         </div>
     </div>
 </div>
+
+
+
 {% endblock %}
