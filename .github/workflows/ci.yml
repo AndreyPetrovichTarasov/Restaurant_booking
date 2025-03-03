@@ -35,7 +35,14 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-
+    env: # Передаем переменные во все джобы
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: ${{ secrets.DEBUG }}
+      NAME: ${{ secrets.NAME }}
+      USER: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      HOST: ${{ secrets.HOST }}
+      PORT: ${{ secrets.PORT }}
     steps:
       - name: Check out code
         uses: actions/checkout@v3
