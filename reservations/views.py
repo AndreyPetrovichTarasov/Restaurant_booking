@@ -133,7 +133,7 @@ class UserReservationsView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Reservation.objects.filter(user=self.request.user).order_by(
-            "-date", "-start_time"
+            "date", "-start_time"
         )
 
 

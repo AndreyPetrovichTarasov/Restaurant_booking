@@ -28,7 +28,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "archive-reservations-every-hour": {
         "task": "reservations.tasks.archive_reservations_task",
-        "schedule": crontab(minute=0, hour="*"),
+        "schedule": crontab(minute="0,30"),
     },
 }
 
