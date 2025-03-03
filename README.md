@@ -83,6 +83,7 @@ Restaurant_booking/
 - Бронирование с выбором времени
 - Управление своими бронями (изменение, удаление)
 - Личный кабинет с историей броней
+- форма обратной связи
 
 ### 🔹 Для администратора:
 - Управление пользователями
@@ -142,14 +143,12 @@ python manage.py createadmin
 python manage.py loaddata test_data.json
 ---
 
-### 3️⃣ Запуск сервиса  
-
-#### 🔹 Запускаем сервер Django  
+#### Запускаем сервер Django  
 ```bash
 python manage.py runserver
 ```
 
-#### Линтеры и кодировка:
+#### 🔹 Линтеры и кодировка:
 
 Для обеспечения качества кода используйте линтеры:
 
@@ -159,15 +158,16 @@ python manage.py runserver
 
 #### 🔹 Запускаем Celery (для фоновых задач)  
 ```bash
-celery -A myproject worker --loglevel=info --pool=solo
+celery -A config worker --loglevel=info --pool=solo
 ```
 
 #### 🔹 Запускаем планировщик Celery Beat  
 ```bash
-celery -A Restaurant_booking beat --loglevel=info
+celery -A config beat --loglevel=info
 ```
 
 ## 🐳 Запуск с помощью Docker  
+! Для запуска с помощью Докера, измените занчение в env-файле переменной HOST с 'localhost' на 'db'
 
 1. **Запускаем контейнеры**  
 ```bash
