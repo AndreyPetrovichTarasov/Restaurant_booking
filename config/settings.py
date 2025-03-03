@@ -56,25 +56,25 @@ TEMPLATES = [
     },
 ]
 
-# if "test" in sys.argv:
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "test_db.sqlite3",
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",
+        }
     }
-}
-# else:
-#
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql",
-#             "NAME": os.getenv("POSTGRES_DB"),
-#             "USER": os.getenv("POSTGRES_USER"),
-#             "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-#             "HOST": os.getenv("HOST"),
-#             "PORT": os.getenv("PORT"),
-#         }
-#     }
+else:
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB"),
+            "USER": os.getenv("POSTGRES_USER"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+            "HOST": os.getenv("HOST"),
+            "PORT": os.getenv("PORT"),
+        }
+    }
 
 CACHES = {
     "default": {
