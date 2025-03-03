@@ -35,7 +35,12 @@ class CheckAvailabilityForm(forms.Form):
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
 
-        if date and start_time:
+        if date:
+            today = now().date()
+            if date < today:
+                self.add_error("date", "Вы не можете выбрать прошедшую дату.")
+
+        if start_time and end_time:
             start_dt = datetime.datetime.strptime(start_time, "%H:%M").time()
             end_dt = datetime.datetime.strptime(end_time, "%H:%M").time()
             current_time = now().time()
@@ -45,9 +50,7 @@ class CheckAvailabilityForm(forms.Form):
                 self.add_error("start_time", "Вы не можете выбрать прошедшее время.")
 
             if end_dt <= start_dt:
-                self.add_error(
-                    "end_time", "Время окончания должно быть позже времени начала."
-                )
+                self.add_error("end_time", "Время окончания должно быть позже времени начала.")
 
 
 class ReservationForm(forms.ModelForm):
