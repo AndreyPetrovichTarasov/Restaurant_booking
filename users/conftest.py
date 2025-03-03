@@ -1,5 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.test import Client
+
 
 User = get_user_model()
 
@@ -19,6 +21,5 @@ def admin_user():
 @pytest.fixture
 def client(db):
     """Фикстура для клиента, который делает запросы"""
-    from django.test import Client
 
     return Client()
