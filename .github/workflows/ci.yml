@@ -52,5 +52,5 @@ jobs:
         run: poetry install --no-root
 
       - name: Run tests
-        run: poetry run pytest users/tests
+        run: poetry run pytest
 
