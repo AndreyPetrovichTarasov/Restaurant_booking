@@ -91,3 +91,7 @@ jobs:
 
       - name: Run tests
         run: pytest
+
+      - name: Debug PostgreSQL Logs
+        if: failure()
+        run: docker logs postgres
