@@ -49,7 +49,9 @@ jobs:
         run: pip install poetry
 
       - name: Install dependencies
-        run: poetry install --no-root
+        run: |
+          poetry config virtualenvs.create false
+          poetry install --no-root
 
       - name: Run tests
         run: pytest
