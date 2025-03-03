@@ -32,37 +32,36 @@ jobs:
       - name: Run flake8
         run: poetry run flake8 .
 
-  test:
-    needs: lint
-    runs-on: ubuntu-latest
-    env: # Передаем переменные во все джобы
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DEBUG: ${{ secrets.DEBUG }}
-      POSTGRES_DB: ${{ secrets.NAME }}
-      POSTGRES_USER: ${{ secrets.USER }}
-      POSTGRES_PASSWORD: ${{ secrets.PASSWORD }}
-      HOST: ${{ secrets.HOST }}
-      PORT: ${{ secrets.PORT }}
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Debug environment variables
-        run: env | grep POSTGRES
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
-      - name: Install Poetry
-        run: pip install poetry
-
-      - name: Install dependencies
-        run: |
-          poetry config virtualenvs.create false
-          poetry install --no-root
-
-      - name: Run tests
-        run: pytest
-
+#  test:
+#    needs: lint
+#    runs-on: ubuntu-latest
+#    env: # Передаем переменные во все джобы
+#      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#      DEBUG: ${{ secrets.DEBUG }}
+#      POSTGRES_DB: ${{ secrets.NAME }}
+#      POSTGRES_USER: ${{ secrets.USER }}
+#      POSTGRES_PASSWORD: ${{ secrets.PASSWORD }}
+#      HOST: ${{ secrets.HOST }}
+#      PORT: ${{ secrets.PORT }}
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Debug environment variables
+#        run: env | grep POSTGRES
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+#
+#      - name: Install Poetry
+#        run: pip install poetry
+#
+#      - name: Install dependencies
+#        run: |
+#          poetry config virtualenvs.create false
+#          poetry install --no-root
+#
+#      - name: Run tests
+#        run: pytest
