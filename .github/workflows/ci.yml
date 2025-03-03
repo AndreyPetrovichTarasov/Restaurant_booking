@@ -33,45 +33,22 @@ jobs:
         run: poetry run flake8 .
 
   test:
+    needs: lint
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: test_db
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U test_user -d test_db"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    env:
+    env: # Передаем переменные во все джобы
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DEBUG: "False"
-      DATABASE_URL: "postgres://test_user:test_password@localhost:5432/test_db"
-      POSTGRES_DB: test_db
-      POSTGRES_USER: test_user
-      POSTGRES_PASSWORD: test_password
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-
+      DEBUG: ${{ secrets.DEBUG }}
+      POSTGRES_DB: ${{ secrets.NAME }}
+      POSTGRES_USER: ${{ secrets.USER }}
+      POSTGRES_PASSWORD: ${{ secrets.PASSWORD }}
+      HOST: ${{ secrets.HOST }}
+      PORT: ${{ secrets.PORT }}
     steps:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Wait for PostgreSQL
-        run: |
-          for i in {1..10}; do
-            pg_isready -h localhost -p 5432 -U test_user && echo "PostgreSQL is up" && exit 0
-            echo "Waiting for PostgreSQL..."
-            sleep 3
-          done
-          echo "PostgreSQL did not start in time" && exit 1
+      - name: Debug environment variables
+        run: env | grep POSTGRES
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -86,12 +63,6 @@ jobs:
           poetry config virtualenvs.create false
           poetry install --no-root
 
-      - name: Run migrations
-        run: python manage.py migrate
-
       - name: Run tests
         run: pytest
 
-      - name: Debug PostgreSQL Logs
-        if: failure()
-        run: docker logs postgres
