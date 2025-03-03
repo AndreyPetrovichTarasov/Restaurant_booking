@@ -112,6 +112,7 @@ venv\Scripts\activate  # для Windows
 ```bash
 pip install -r requirements.txt
 ```
+Либо создать проект с Poetry
 
 ### 2️⃣ Настройка базы данных  
 
