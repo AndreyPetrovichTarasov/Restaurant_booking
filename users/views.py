@@ -34,7 +34,7 @@ class RegisterView(CreateView):
         host = self.request.get_host()
         url = f"http://{host}/users/confirm-registration/{token}/"
         send_mail(
-            subject="Подтверждение регистрации на Perfect Mailing",
+            subject="Подтверждение регистрации на сайте ресторана Плакучая ива",
             message=f"Здравствуйте! Для подтверждения регистрации перейдите по ссылке: {url}",
             from_email=EMAIL_HOST_USER,
             recipient_list=[user.email],
@@ -60,7 +60,11 @@ class CustomLoginView(LoginView):
     """
 
     template_name = "users/login.html"
-    success_url = reverse_lazy("catalog:home")
+    success_url = reverse_lazy("home")
+
+    def form_invalid(self, form):
+        form.add_error(None, "Неверный логин или пароль. Попробуйте ещё раз.")  # Ошибка для всей формы
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
@@ -152,6 +156,9 @@ class DeactivateUserView(UserPassesTestMixin, View):
 
 
 def reviews_view(request):
+    """
+    Представление для просмотра ревью
+    """
     reviews = Review.objects.all()
     form = (
         ReviewForm() if request.user.is_authenticated else None

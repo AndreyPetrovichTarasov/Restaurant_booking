@@ -11,6 +11,7 @@ from .models import Table, Reservation, ArchivedReservation
 
 
 class TableAvailabilityView(LoginRequiredMixin, View):
+    """Представление просмотра доступных столиков."""
     template_name = "reservations/check_availability.html"
 
     def get(self, request):
@@ -23,8 +24,6 @@ class TableAvailabilityView(LoginRequiredMixin, View):
             date = form.cleaned_data["date"]
             start_time = form.cleaned_data["start_time"]
             end_time = form.cleaned_data["end_time"]
-
-            print(f"Фильтрация по дате: {date}, от {start_time} до {end_time}")
 
             # Находим занятые столики
             reserved_tables = Reservation.objects.filter(
@@ -57,6 +56,7 @@ class TableAvailabilityView(LoginRequiredMixin, View):
 
 
 class TableBookingView(LoginRequiredMixin, View):
+    """Представление подтверждения брони."""
     def post(self, request):
         date_str = request.POST.get("date")
         print(f"Полученная дата: {date_str}")  # Лог для отладки
@@ -127,6 +127,7 @@ class ReservationSuccessView(LoginRequiredMixin, TemplateView):
 
 
 class UserReservationsView(LoginRequiredMixin, ListView):
+    """Список бронирований."""
     model = Reservation
     template_name = "reservations/user_reservations.html"
     context_object_name = "reservations"
@@ -138,6 +139,7 @@ class UserReservationsView(LoginRequiredMixin, ListView):
 
 
 class ReservationDeleteView(LoginRequiredMixin, DeleteView):
+    """Удаление брони."""
     model = Reservation
     template_name = "reservations/delete_reservation.html"
     success_url = reverse_lazy("reservations:user_reservations")
@@ -148,6 +150,7 @@ class ReservationDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ReservationUpdateView(LoginRequiredMixin, UpdateView):
+    """Изменение брони."""
     model = Reservation
     form_class = ReservationForm
     template_name = "reservations/edit_reservation.html"
@@ -159,9 +162,10 @@ class ReservationUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ArchivedReservationsView(LoginRequiredMixin, ListView):
+    """История бронирований."""
     model = ArchivedReservation
     template_name = "reservations/archived_reservations.html"
     context_object_name = "reservations"
 
     def get_queryset(self):
-        return ArchivedReservation.objects.filter(user=self.request.user)
+        return ArchivedReservation.objects.filter(user=self.request.user).order_by('-id')

@@ -9,7 +9,7 @@ from config.forms import ContactForm
 from content.models import HomePageContent, AboutContent, ServicesContent
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')  # Кэш на 15 минут
+# @method_decorator(cache_page(60 * 15), name='dispatch')  # Кэш на 15 минут
 class HomePageView(DetailView):
     model = HomePageContent
     template_name = "home.html"

@@ -1,5 +1,6 @@
 from django import forms
-import datetime
+from django.utils.timezone import localtime
+from datetime import date, datetime
 
 from reservations.models import Reservation, Table
 
@@ -11,7 +12,7 @@ class CheckAvailabilityForm(forms.Form):
     date = forms.DateField(
         label="Дата",
         widget=forms.DateInput(
-            attrs={"type": "date", "min": datetime.date.today().isoformat()}
+            attrs={"type": "date", "min": date.today().isoformat()}
         ),
     )
     start_time = forms.ChoiceField(label="Время от")
@@ -31,26 +32,30 @@ class CheckAvailabilityForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        date = cleaned_data.get("date")
+        date_selected = cleaned_data.get("date")
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
 
-        if date:
+        if date_selected:
             today = now().date()
-            if date < today:
+            if date_selected < today:
                 self.add_error("date", "Вы не можете выбрать прошедшую дату.")
 
         if start_time and end_time:
-            start_dt = datetime.datetime.strptime(start_time, "%H:%M").time()
-            end_dt = datetime.datetime.strptime(end_time, "%H:%M").time()
-            current_time = now().time()
+            start_dt = datetime.strptime(start_time, "%H:%M").time()
+            end_dt = datetime.strptime(end_time, "%H:%M").time()
+            current_time = localtime(now()).time().replace(second=0, microsecond=0)  # Преобразуем в локальное время
             today = now().date()
 
-            if date == today and start_dt < current_time:
+            print(f"Сегодняшняя дата: {today}, Текущее время: {current_time}")
+
+            if date_selected == today and start_dt < current_time:
                 self.add_error("start_time", "Вы не можете выбрать прошедшее время.")
 
             if end_dt <= start_dt:
                 self.add_error("end_time", "Время окончания должно быть позже времени начала.")
+
+        return cleaned_data
 
 
 class ReservationForm(forms.ModelForm):
